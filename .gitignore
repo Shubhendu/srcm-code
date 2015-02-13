@@ -1,0 +1,10 @@
+**.svn
+**.idea
+**.iml
+**target
+**.log
+build.bat
+/regapp/.settings
+/regapp/.classpath
+/regapp/.springBeans
+/regapp/.project
