@@ -4,7 +4,7 @@
 **target
 **.log
 build.bat
-/regapp/.settings
-/regapp/.classpath
-/regapp/.springBeans
-/regapp/.project
+regapp/.settings
+regapp/.classpath
+regapp/.springBeans
+regapp/.project
