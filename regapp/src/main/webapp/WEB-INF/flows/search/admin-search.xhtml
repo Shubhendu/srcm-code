@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	template="/WEB-INF/layouts/standard.xhtml">
+
+	<ui:define name="content">
+	 <h:form id="regForm">
+	  <p:messages />
+	  <p:panel header="Search Registrant for '#{seminar.title}'" styleClass="span-24">
+	   		<div class="search">
+	 		  	<h:outputLabel for="firstName">#{messageSource['search.firstname']}: </h:outputLabel><br/>
+				<p:message for="firstName" styleClass="span-5"/>
+				<p:inputText id="firstName" label="#{messageSource['search.firstname']}" value="#{searchRegistrant.searchFirstName}"/>	
+			</div>
+			<div class="search">
+	 		  	<h:outputLabel for="lastName">#{messageSource['search.lastname']}: </h:outputLabel><br/>
+				<p:message for="lastName" styleClass="span-5"/>
+				<p:inputText id="lastName" label="#{messageSource['search.lastname']}" value="#{searchRegistrant.searchLastName}"/>	
+			</div>
+			<div class="search">
+				<h:outputLabel for="emailId">#{messageSource['search.email']}: </h:outputLabel><br/>
+				<p:message for="emailId" styleClass="span-5"/>
+				<p:inputText id="emailId" label="#{messageSource['search.email']}" value="#{searchRegistrant.searchEmailAddress}"/>
+			</div>
+			<div class="search">
+				<h:outputLabel for="regId">#{messageSource['search.regId']}: </h:outputLabel><br/>
+				<p:message for="regId" styleClass="span-5"/>
+				<p:inputText id="regId" label="#{messageSource['search.regId']}" value="#{searchRegistrant.searchRegId}"/>
+			</div>
+			<p:commandButton value="#{messageSource['search']}"  icon="ui-icon-search" action="searchRegistrant" ajax="false"/>
+ 									 
+ 			<p:commandButton value="#{messageSource['cancel']}" icon="ui-icon-close" 
+                        action="backToSeminarList" immediate="true" ajax="false" /> 
+			
+		 </p:panel>
+		 
+		 <p:dataTable var="registrant" value="#{registrantList}">
+		 <p:column headerText="Abyasi">
+		  <h:outputText value="#{registrant.lastName}" />
+		 </p:column>
+		  <p:column headerText="Actions">
+		    <p:commandButton value="Select" action="addOrEditSeminar" ajax="false">
+		      <f:setPropertyActionListener target="#{seminarWebBean.selectedSeminar}" value="#{seminar}"/>
+		    </p:commandButton>
+		 </p:column>
+		</p:dataTable>
+		 
+	 </h:form>
+  </ui:define>
+</ui:composition>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:tr="http://myfaces.apache.org/trinidad"
+	template="/WEB-INF/layouts/regapp_standard.xhtml">
+
+	<ui:define name="content">
+	 <h:form id="regForm" enctype="multipart/form-data">
+	  <p:commandLink action="getSeminarRegistrations" ajax="false" value="Registrations For this Seminar" immediate="true"/>
+	  <p:commandLink action="cancel" ajax="false" value="Back To Seminar List" style="float:right" immediate="true"/>
+	  <p:messages/>
+	  <p:panel header="Seminar Form" styleClass="span-24">
+	   		<div class="span-12">
+	 		  	<h:outputLabel value="Seminar URL : #{seminarWebBean.applicationURL}/registration.jsp?seminarID=#{seminar.seminarId}" rendered="#{seminar.seminarId != null}"/>
+					
+			</div>
+	   		<div class="span-12">
+	 		  	<h:outputLabel for="semTitleId">#{messageSource['seminar.title']}: </h:outputLabel><br/>
+				<p:message for="semTitleId" styleClass="span-5"/>
+				<p:inputText id="semTitleId" label="#{messageSource['seminar.title']}" value="#{seminar.title}"/>	
+			</div>
+			<div class="span-10 last">
+				<h:outputLabel for="semThmId">#{messageSource['seminar.theme']}: </h:outputLabel><br/>
+				<p:message for="semThmId" styleClass="span-5"/>
+				<p:inputText id="semThmId" label="#{messageSource['seminar.theme']}" value="#{seminar.theme}"/>
+			</div>
+			<div class="span-12">
+				<h:outputLabel for="startDtId">#{messageSource['seminar.start.date']}: </h:outputLabel><br/>
+				<p:message for="startDtId" styleClass="span-5"/>
+				<p:calendar id="startDtId" label="#{messageSource['seminar.start.date']}" value="#{seminar.startDt}" pattern="MM/dd/yyyy" timeZone="EST" required="true" readOnlyInputText="true"/>
+			</div>
+			<div class="span-10 last">
+				<h:outputLabel for="endDtId">#{messageSource['seminar.end.date']}: </h:outputLabel><br/>
+				<p:message for="endDtId" styleClass="span-5"/>
+				<p:calendar id="endDtId" label="#{messageSource['seminar.end.date']}" value="#{seminar.endDt}" pattern="MM/dd/yyyy" timeZone="EST" required="true" readOnlyInputText="true"/>
+			</div>
+			<div class="span-12">
+				<h:outputLabel for="locId">#{messageSource['seminar.location']}: </h:outputLabel><br/>
+				<p:message for="locId" styleClass="span-5"/>
+				<p:inputText id="locId" label="#{messageSource['seminar.location']}" value="#{seminar.location}"/>
+			</div>
+			<div class="span-10 last">
+				<h:outputLabel for="addrId">#{messageSource['seminar.address']}: </h:outputLabel><br/>
+				<p:message for="addrId" styleClass="span-5"/>
+				<p:inputText id="addrId" label="#{messageSource['seminar.address']}" value="#{seminar.address}"/>
+			</div>
+			<div class="span-12">
+				<h:outputLabel for="cityId">#{messageSource['seminar.city']}: </h:outputLabel><br/>
+				<p:message for="cityId" styleClass="span-5"/>
+				<p:inputText id="cityId" label="#{messageSource['seminar.city']}" value="#{seminar.city}"/>
+			</div>
+			<div class="span-10 last">
+				<h:outputLabel for="zipId">#{messageSource['seminar.zip']}: </h:outputLabel><br/>
+				<p:message for="zipId" styleClass="span-5"/>
+				<p:inputText id="zipId" label="#{messageSource['seminar.zip']}" value="#{seminar.zip}"/>
+			</div>
+			<div class="span-12">
+				<h:outputLabel for="ctryId">#{messageSource['seminar.country']}: </h:outputLabel><br/>
+				<p:message for="ctryId" styleClass="span-5"/>
+				<p:selectOneMenu id="ctryId" label="#{messageSource['seminar.country']}" value="#{seminar.country}">
+					 <f:selectItems value="#{lookupBean.countries}" var="country" itemLabel="#{country.countryName}" itemValue="#{country.id}"/>
+				</p:selectOneMenu>
+			</div>
+			<div class="span-10 last">
+				<h:outputLabel for="semTypeId">#{messageSource['seminar.type']}: </h:outputLabel><br/>
+				<p:selectOneMenu id="semTypeId" label="#{messageSource['seminar.type']}" value="#{seminar.type}">
+					 <f:selectItems value="#{lookupBean.seminarTypes}" var="seminarType" itemLabel="#{seminarType.type}" itemValue="#{seminarType.id}"/>
+				</p:selectOneMenu>
+			</div>
+			<div class="span-12">
+				<h:outputLabel for="semCoorId">#{messageSource['seminar.coord']}: </h:outputLabel><br/>
+				<p:message for="semCoorId" styleClass="span-5"/>
+				<p:inputText id="semCoorId" label="#{messageSource['seminar.coord']}" value="#{seminar.coordinator}"/>
+			</div>
+			<div class="span-10 last">
+				<h:outputLabel for="status">#{messageSource['seminar.status']}: </h:outputLabel><br/>
+				<p:selectOneMenu id="status" label="#{messageSource['seminar.status']}" value="#{seminar.status}">
+					 <f:selectItems value="#{lookupBean.seminarStatusTypes}" var="statusType" itemLabel="#{statusType.type}" itemValue="#{statusType.id}"/>
+				</p:selectOneMenu>
+			</div>
+			
+			<div class="span-12">
+				<h:outputLabel for="coordinatorPhone">#{messageSource['seminar.coord.phone']}: </h:outputLabel><br/>
+				<p:message for="coordinatorPhone" styleClass="span-5"/>
+				<p:inputText id="coordinatorPhone" value="#{seminar.phone}" label="#{messageSource['seminar.coord.phone']}" maxlength="20"/>
+			</div>
+			<div class="span-10 last">
+				<h:outputLabel for="coordinatorEmail">#{messageSource['seminar.coord.email']}: </h:outputLabel><br/>
+				<p:message for="coordinatorEmail" styleClass="span-5"/>
+				<p:inputText id="coordinatorEmail" value="#{seminar.email}" label="{messageSource['seminar.coord.email']}" validatorMessage="Invalid Email" maxlength="45">
+					<f:validateRegex pattern="[a-zA-Z0-9]+[_.a-zA-Z0-9]+@[a-zA-Z]+[-_.a-zA-Z]+.[a-zA-Z]{2,3}"></f:validateRegex>
+				</p:inputText>
+			</div>
+			
+			<div class="span-12 last">
+				<h:outputLabel for="donationAccountType">#{messageSource['seminar.donationAccountType']}: </h:outputLabel><br/>
+				<p:message for="donationAccountType" styleClass="span-5"/>
+				<p:selectOneMenu value="#{seminar.donationAccount}" id="donationAccountType" label="age" validator="#{seminarWebBean.validateDonationAccountType}" validatorMessage="Donation Account Type not selected">
+           			<f:selectItem itemValue="#{seminarWebBean.donationAccountTypeNotSelectedConst}" itemLabel="Choose" />
+           		 	<f:selectItems value="#{seminarWebBean.donationAccountTypes}" var="donationAccountType" 
+           		 	 					itemValue="#{donationAccountType.value}" itemLabel="#{donationAccountType.label}"/>
+           		 	<p:ajax update="adultDonation" />
+           		 	<p:ajax update="childDonation" />
+           		</p:selectOneMenu>
+			</div>
+			
+			<div class="span-10 last">
+				<h:outputLabel for="addressNeeded">#{messageSource['seminar.addressNeeded']}: </h:outputLabel><br/>
+				<p:message for="addressNeeded" styleClass="span-5"/>
+				<p:selectBooleanCheckbox id="addressNeeded" value="#{seminar.addressNeeded}" />  
+			</div>
+			
+			
+			<div class="span-12">
+				<h:outputLabel for="adultDonation">#{messageSource['seminar.adultDonation']}: </h:outputLabel><br/>
+				<p:message for="adultDonation" styleClass="span-5"/>
+				<p:inputText id="adultDonation" disabled="#{seminar.donationAccount == '0'}" value="#{seminar.adultDonation}" label="#{messageSource['seminar.adultDonation']}" required="true"  validatorMessage="Adult donation amount is required"/>
+			</div>
+			<div class="span-10 last">
+				<h:outputLabel for="childDonation">#{messageSource['seminar.childDonation']}: </h:outputLabel><br/>
+				<p:message for="childDonation" styleClass="span-5"/>
+				<p:inputText id="childDonation" disabled="#{seminar.donationAccount == '0'}" value="#{seminar.childDonation}" label="{messageSource['seminar.childDonation']}"  required="true"  validatorMessage="Child donation amount is required"/>
+					
+			</div>
+			
+			
+			
+			<div class="span-12 last">
+				<h:outputLabel for="semDescId">#{messageSource['seminar.desc']}: </h:outputLabel><br/>
+				<p:message for="semDescId" styleClass="span-5"/>
+				<p:inputTextarea id="semDescId" label="#{messageSource['seminar.desc']}" value="#{seminar.desc}" rows="5" cols="30" autoResize="true"/>
+			</div>
+			<div class="span-10 last">
+				<h:outputLabel for="attachUploadId">#{messageSource['file.attachment']}: </h:outputLabel><br/>
+				<p:message for="attachUploadId" styleClass="span-5"/>
+				<p:fileUpload id="attachUploadId" label="#{messageSource['file.attachment']}" value="#{seminarWebBean.uploadFile1}" mode="simple"/>
+			</div>
+			
+		 </p:panel>
+		 <p:panel header="Custom Fields for '#{seminar.title}'" styleClass="span-24">
+		   <p:commandLink action="newCustField" value="#{messageSource['add.custom.field']}" oncomplete="fldDialog.show()" process="@this">
+		     <f:setPropertyActionListener target="#{seminarWebBean.selectedField}" value="#{field}" />
+		   </p:commandLink>
+		  <p:dataTable id="custFields" var="field" value="#{seminarWebBean.selectedSeminarCustomFields}">
+		    <f:facet name="header">  
+            	Custom Fields for Seminar  
+        	</f:facet>
+        	<p:column headerText="Label">  
+            	#{field.fieldLabel}  
+        	</p:column>
+        	<p:column headerText="Description">  
+            	#{field.fieldDesc}  
+        	</p:column>
+        	<p:column headerText="Required?">  
+            	#{field.requiredText}
+        	</p:column>
+        	<p:column headerText="Action">
+        	    <p:commandLink value="Edit" update=":modelForm:editDlgId" process="@this" oncomplete="fldDialog.show()">
+            	  <f:setPropertyActionListener target="#{seminarWebBean.selectedField}" value="#{field}"/>
+            	</p:commandLink>
+            	<p:spacer width="5"/> 
+            	<p:commandLink action="deleteCustField" value="Delete" update="@form" process="@this">
+            	  <f:setPropertyActionListener target="#{seminarWebBean.selectedField}" value="#{field}"/>
+            	</p:commandLink>
+        	</p:column>  
+		   </p:dataTable>
+		   <div class="span-12">
+				<p:commandButton action="saveSeminar" value="#{messageSource['save']}" ajax="false"/>
+			</div>
+			<div class="span-10 last">
+				<p:commandButton action="cancel" value="#{messageSource['cancel']}" ajax="false" immediate="true" />
+			</div>
+		 </p:panel>
+		  <p:panel id="attchId" header="Attachments for '#{seminar.title}'" styleClass="span-24">
+		 	 <p:dataTable id="attachmentsId" var="file" value="#{filesAttahced}">
+		 	 	<p:column headerText="File Name">  
+            		#{file.displayFileName}  
+        		</p:column>
+        		<p:column headerText="Mime Type">  
+            		#{file.mimeType}  
+        		</p:column>
+        		<p:column headerText="Action">  
+            		<p:commandLink id="downloadLink" value="Download" ajax="false" icon="ui-icon-arrowthichk-s">  
+    					<p:fileDownload value="#{file.fileToDownload}" />  
+					 </p:commandLink>
+					 <p:spacer width="5"/>
+					 <p:commandLink id="attchDelLnk" value="Delete" action="delAttachment" process="@this" update="@form">  
+    					<f:setPropertyActionListener target="#{seminarWebBean.selectedFile}" value="#{file}" />
+					 </p:commandLink> 
+        		</p:column>
+		 	 </p:dataTable>
+		 </p:panel>
+	 </h:form>
+	
+	 <h:form id="modelForm">
+		 <p:dialog header="Custom Field Details" widgetVar="fldDialog" fixedCenter="true" modal="true" width="400" dynamic="true">
+	  
+	   	  <p:outputPanel id="dialogPanel">
+	                <p:messages/>
+                    <h:panelGrid id="editDlgId" columns="2" cellpadding="4">                         
+ 
+                        <h:outputLabel for="labelId">Label: </h:outputLabel>
+                        <h:panelGroup>
+                        	<p:inputText id="labelId" label="Label" value="#{seminarWebBean.selectedField.fieldLabel}"/>
+                        	<p:message for="labelId" styleClass="span-5"/>
+                        </h:panelGroup>
+ 
+                        <h:outputLabel for="descId">Description: </h:outputLabel>
+                         <h:panelGroup>
+                        	<p:inputText id="descId" label="Description" value="#{seminarWebBean.selectedField.fieldDesc}"/>
+                        	<p:message for="descId" styleClass="span-5"/>
+                        </h:panelGroup>
+                        
+                        
+                        <h:outputLabel for="fieldType" value="Field Type: *" />
+                        <h:panelGroup>
+						<p:selectOneMenu value="#{seminarWebBean.selectedField.fieldType}" id="fieldType" label="fieldType" validator="#{seminarWebBean.validateCustomFieldType}" validatorMessage="Field Type not selected">
+            			<f:selectItem itemValue="#{seminarWebBean.customFieldTypeNotSelectedConst}" itemLabel="Choose" />
+            		 	<f:selectItems value="#{seminarWebBean.customFieldType}" var="fieldType" 
+            		 	 					itemValue="#{fieldType.value}" itemLabel="#{fieldType.label}"/>   
+            		 	 					<p:message for="fieldType" styleClass="span-5"/>         		 	
+            			</p:selectOneMenu>
+            			</h:panelGroup>
+            			
+            			
+            			<h:outputLabel for="possibleValues" value="Possible Field Values"/>
+						<h:panelGroup>
+						<p:inputTextarea id="possibleValues" label="Possible Field Values" value="#{seminarWebBean.selectedField.possibleFieldValues}" rows="5" cols="30" autoResize="true"/>
+						<p:watermark for="possibleValues" value="Enter values seperated by colons : Total char length of all options combined should be less than or equal to 512 chars" />
+						<p:message for="possibleValues" styleClass="span-5"/>
+						</h:panelGroup>
+            		
+                       <h:outputLabel for="reqId">Required?: </h:outputLabel>
+                         <h:panelGroup>
+                            <p:selectOneMenu id="reqId" value="#{seminarWebBean.selectedField.required}">  
+            					<f:selectItem itemLabel="Yes" itemValue="1" />  
+            					<f:selectItem itemLabel="No" itemValue="0" />  
+        					</p:selectOneMenu>
+                        	<p:message for="reqId" styleClass="span-5"/>
+                        </h:panelGroup>
+                       
+ 						 <p:commandButton value="#{messageSource['save.field']}"  icon="ui-icon-check" action="saveCustField"
+ 									 process="@this,labelId,descId,fieldType,possibleValues,reqId"                                          
+                                     update=":modelForm:editDlgId,:regForm:custFields"
+                                     oncomplete="handleValidationRequest(xhr, status, args)"/>
+ 									 
+              			<p:commandButton value="#{messageSource['cancel']}"   icon="ui-icon-close" 
+                                     action="cancelCustField" 
+                                     oncomplete="fldDialog.hide()" immediate="true"
+                                     process="@this"
+                                     update=":regForm"/>  
+                    </h:panelGrid>
+        </p:outputPanel>
+       
+	 </p:dialog>
+	 </h:form>
+	 
+      <script type="text/javascript">  
+           
+            function handleValidationRequest(xhr, status, args) {  
+                if(!args.validationFailed) {  
+                	fldDialog.hide();  
+                } 
+            }  
+            function start() {  
+                statusDialog.show();  
+            }  
+              
+            function stop() {  
+                statusDialog.hide();  
+            }  
+        </script>
+        
+  </ui:define>
+</ui:composition>

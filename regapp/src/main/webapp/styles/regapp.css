@@ -1,0 +1,85 @@
+.ui-widget-content2 {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border:0 !important;
+   color: #000000;
+}
+
+
+.ui-widget-content1 {
+    background: none repeat scroll 0 0 #F0F8FF;
+    border:0 !important;
+    color: #4F4F4F;
+}
+
+.regapp-grid tr, .regapp-grid td {
+	border:0 !important;
+}
+
+.regapp-border{
+	border: 1px solid #A8A8A8;
+}
+
+.regapp-border1{
+	border: 1px solid #A8A8A8;
+}
+
+.regapp-col {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border:0 #A8A8A8 !important;
+    color: #4F4F4F;
+}
+
+table.regapp_cust_table,  table.regapp_cust_table td, table.regapp_cust_table th{
+	border-collapse: collapse !important;
+   border:0.25px #A8A8A8  !important;
+   padding:5px;
+}
+
+label {
+    font-weight: bold !important;
+    font-size: 6 !important;
+}
+
+.regapp-error {
+    background: none repeat scroll 0 0 #FBE3E4;
+    border-color: #FBC2C4;
+    color: #8A1F11;
+    font-size: 2;
+}
+
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 95% !important;
+ }
+
+.internalGrid {
+	border: none;
+	padding: 0;
+}
+
+.staticGrid_4 tbody tr td{
+	width: 25%;
+}
+.internalGrid tbody tr td{
+	width: 50%;
+}
+.panelNoBorder tbody tr td table{
+	border:none;
+	margin-bottom: 0;
+}
+.ui-selectoneradio tbody tr td{
+	border-width: 0;
+}
+
+.noBorder tr,.noBorder td, .noBorder table {
+    border: none !important;
+	}
+
+.ui-growl {
+right: 50%;
+top: 50%;
+}
+
+.ui-growl-title {
+    font-size: 15px;
+    font-weight: bold;
+ }

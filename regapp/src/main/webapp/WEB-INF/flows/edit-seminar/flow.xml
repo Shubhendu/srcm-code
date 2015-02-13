@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+ 	
+ 	
+ 	
+ 	<input name="seminarWebBean" required="true" type="org.srcm.gems.regapp.web.bean.SeminarWebBean"/>
+ 	<input name="toAction" required="true" type="java.lang.String"/>
+ 	
+ 	<on-start>
+ 		<evaluate expression="seminarHelper.initBeans(flowScope.seminarWebBean)"/>
+ 		<evaluate expression="seminarWebBean.selectedSeminar" result="flowScope.seminar"/>
+ 	</on-start>
+ 	
+ 	<decision-state id="decideWhereToGo">
+ 		<if then="edit-seminar" test="toAction == 'editSeminar'" else="seminar-registrant-list"/>
+ 	</decision-state>
+ 	
+ 	<view-state id="edit-seminar">
+ 	  
+ 	  	<on-entry>
+ 	  		<evaluate expression="seminarWebBean.getFilesForSeminar(flowScope.seminar)" result="flowScope.filesAttahced"/>
+ 	  	</on-entry>
+ 	  	
+ 	   <transition on="saveSeminar" to="edit-seminar">
+ 	     <evaluate expression="seminarWebBean.saveSeminar(messageContext,flowScope.seminar)" result="flowScope.seminar"/>
+ 	     
+ 	   </transition>
+ 	   
+ 	   <transition on="downloadAttachment">
+ 	     <evaluate expression="externalContext.recordResponseComplete()"/>
+ 	   </transition>
+ 	   
+ 	   <transition on="delAttachment">
+ 	     <evaluate expression="seminarWebBean.deleteAttachment()"/>
+ 	     <evaluate expression="seminarWebBean.getFilesForSeminar(flowScope.seminar)" result="flowScope.filesAttahced"/>
+ 	   </transition>
+ 	   
+ 	   <transition on="getSeminarRegistrations" to="seminar-registrant-list">
+ 	   		<!-- <evaluate expression="seminarWebBean.getRegistrationsForSeminar(flowScope.seminar)" result="flowScope.registrationList"/> -->
+ 	   </transition>
+ 	   <transition on="newCustField"/>
+ 	   
+ 	   <transition on="deleteCustField">
+ 	   	  <evaluate expression="seminarWebBean.deleteCustField(messageContext)"/>
+ 	   </transition>
+ 	   
+ 	   <transition on="saveCustField">
+ 	     <evaluate expression="seminarWebBean.addCustField(flowScope.seminar,messageContext)" result="flowScope.seminar"/>
+ 	   </transition>
+ 	    <transition on="cancelCustField"/>
+ 	    
+ 	    <transition on="backToSeminarList" to="editSeminarEnd"/>
+ 	    <transition on="cancel" to="editSeminarEnd"/>
+ 	    
+	</view-state>
+	
+	<view-state id="seminar-registrant-list">
+	    <on-entry>
+	    	<evaluate expression="seminarWebBean.getRegistrationsForSeminar(flowScope.seminar)" result="flowScope.registrationList"/>
+	    </on-entry>
+		<transition on="cancel" to="editSeminarEnd"/>
+	</view-state>
+	
+	<end-state id="editSeminarEnd"/>
+	
+	
+
+</flow>

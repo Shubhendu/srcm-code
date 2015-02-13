@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	template="/WEB-INF/layouts/standard.xhtml">
+
+	<ui:define name="content">
+	 <h:form id="regForm">
+
+		<ui:include src="registrationHeader.xhtml"/>
+
+		<p:panelGrid columns="1">
+			<p:messages severity="error"/>
+  			<p:growl id="growl" showDetail="true" sticky="true" severity="info"/>
+
+			
+				<ui:include src="registrationForm.xhtml"/>
+				
+			    <p:panelGrid  rendered="#{!registrantWebBean.completedAdd}" cellpadding="0" styleclass="border:none;"  >
+			    	<p:row  >
+						<p:column colspan="1" style="border:none;" >
+							<p:commandButton value="Add More Registrant" icon="ui-icon-plus"
+						style="margin:0;float:left" ajax="false" onclick="this.disable=true" action="addRegistrant"/>
+						</p:column>
+						<p:column colspan="1" style="border:none;" >
+							<p:commandButton action="removeDependent" icon="ui-icon-close"
+							value="Cancel Additional Registrant" style="margin:0;float:right" immediate="true"/>
+						 	
+						</p:column>
+						<p:column colspan="1" style="border:none;" >
+							<p:commandButton action="completeAddingRegistrant" icon="ui-icon-check"
+							value="Complete Adding Registrant" style="margin:0;float:right"  ajax="false" />
+						 	
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				
+
+				<ui:include src="additionalRegistrants.xhtml"/>
+				
+				<ui:include src="paymentAndDisclaimer.xhtml"/>
+			 
+				 
+		</p:panelGrid>
+	  </h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<body>
+Dear Brother/Sister,<br/><br/>
+
+Thank you for registering. Your registration is confirmed, please use the registration number shown below for all enquiries.<br/><br/>
+
+<b>Registration Number :</b> $registrationNumber
+<br/><b>Seminar :</b><br/>
+        
+        <span style="padding-left:5em"/>Name: <i>$seminarName , $seminarLocation</i><br>
+        <span style="padding-left:5em"/>Location: <i>$address,  $city, $zip</i><br>
+        <span style="padding-left:5em"/>Seminar coordinator contact info: <i>$coordinator , $coordinatorPhone , $coordinatorEmail</i><br>
+
+#if($paidThruWeb && $paidThruWeb=="Yes" && $ccTransactionNumber && $amountPaid)
+	<br><b>Thank you for using the Pay Now option. Transaction # for your Credit/Debit card Payment of $<i>$amountPaid</i> is $ccTransactionNumber.</b><br>
+ <br><i>The estimated value of goods or services provided for this Event is $ 0.00. &nbsp;&nbsp;
+Shri Ram Chandra Mission is a California, USA, non-profit corporation, exempt from federal income tax under section 501(c)(3) of the internal revenue code, and also registered as an exempt organization in Texas. Fed Id 23-7336143.</i>
+#end
+
+<br/><b>Primary Registrant :</b><br/><br/>
+		<div style="padding-left:5em">
+		<table style="border:1px solid black;border-collapse:collapse;">
+			<tr>
+				<th style="border:1px solid black;">Name</th>
+				<th style="border:1px solid black;">Arrival Date</th>
+				
+				<th style="border:1px solid black;">Departure Date</th>
+				
+			</tr>
+			<tr><td style="border:1px solid black;">$firstName $lastName</td><td style="border:1px solid black;">$arrivalDate</td><td style="border:1px solid black;">$departureDate</td></tr>
+		</table>
+		</div>
+#if($otherRegistrants.size()>0)        
+<br/><b>Other Registrants : </b><br/>
+      <div style="padding-left:5em">
+      <table style="border:1px solid black;border-collapse:collapse;">
+      		<tr>
+				<th style="border:1px solid black;">Name</th>
+				<th style="border:1px solid black;">Age Group</th>
+			</tr>
+      	#foreach($otherRegistrant in $otherRegistrants)
+			 <tr><td style="border:1px solid black;">$otherRegistrant.getFirstName() $otherRegistrant.getLastName()</td><td style="border:1px solid black;">$otherRegistrant.getAgeRange()</td></tr>     	
+      	#end
+      </table>
+      </div>
+#end
+<br/><br/>
+Thank you for registering online.
+<br/>
+</body>
+</html>

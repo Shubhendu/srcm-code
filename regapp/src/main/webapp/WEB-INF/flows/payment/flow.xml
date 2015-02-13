@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	
+	<decision-state id="ccReturn">	  
+		<on-entry>
+			<evaluate expression="registrantWebBeanProto" result="flowScope.regWebBean"/>
+			<evaluate expression="regWebBean.findRegistrant(requestParameters.trackingNo)" result="flowScope.registrant"/>
+			<set name="flowScope.status" value="requestParameters.x_response_code" />
+			<set name="flowScope.errorTxt" value="requestParameters.x_response_reason_text" />
+			<set name="flowScope.transactionId" value="requestParameters.x_trans_id" />
+		</on-entry>
+		
+		<if test="regWebBean.updatePaymentStatus(requestParameters.x_response_code, requestParameters.x_response_reason_text,requestParameters.x_trans_id,requestParameters.trackingNo)" then="ccSuccess" else="ccFailure" />
+	</decision-state>
+
+ 	
+	
+	<view-state id="ccSuccess">
+		<transition on="backToLogin" to="seminarMain"/>
+	</view-state>
+	<view-state id="ccFailure" >
+		<transition on="backToLogin" to="seminarMain"/>
+	</view-state>
+	
+</flow>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	template="/WEB-INF/layouts/standard.xhtml">
+
+	<ui:define name="content">
+	 <h:form>
+	 	<h:panelGrid columns="1">
+	 	
+	 	 <p:commandLink action="backToLogin" value="Back to Seminar List" style="font-weight:900;float:left" immediate="true"/>
+	 	 
+	 	 <ui:include src="registrationHeader.xhtml"/>
+	 	 
+	    <p:messages/>
+	    
+	    <p:panel rendered="#{!registrantWebBean.selectedSeminar.allowNewRegistration}">  
+	    <div id="ClosedForWebMessage" class="ui-messages ui-widget" >
+			<div class="ui-messages-warn ui-corner-all">
+				<span class="ui-messages-warn-icon"></span>
+				<span class="ui-messages-warn-summary">Registration for this Seminar is closed for web</span>
+			</div>
+		</div>
+		</p:panel>
+		<p:panelGrid columns="2" >
+					<f:facet name="header">
+        				<b>Retrieve existing registration</b>
+    				</f:facet>
+
+					<h:outputLabel for="lastName" value="Last Name: *" />
+					<p:inputText id="lastName" value="#{registrantWebBean.searchLastName}" label="lastName" />
+
+					<h:outputLabel for="emailId" value="Email: *" />
+					<p:inputText id="emailId" value="#{registrantWebBean.searchEmailAddress}" label="emailId" />
+
+					<f:facet name="footer">
+						
+						<p:commandButton ajax="false" action="newRegistration" value="New Registration" rendered="#{registrantWebBean.selectedSeminar.allowNewRegistration}"/>  
+
+					    <p:commandButton ajax="false" action="findRegistration" value="Modify Existing Registration" style="float:right;"/>  
+
+					</f:facet>
+			</p:panelGrid>
+		</h:panelGrid>
+	  </h:form>
+	</ui:define>
+</ui:composition>

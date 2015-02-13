@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
+	
+<f:view contentType="text/html">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>SRCM Event Registration</title>
+</h:head>
+<h:body>
+<p:layout fullPage="true" style="margin-left: 10%;margin-right: 10%;width:1000px;height:1600px;">
+   <!-- 
+    <p:panelGrid>
+			<p:row>
+				<p:column style="background-color: #bbc5c7;">
+					<h:graphicImage alt="SRCM Seminar Registration" id="eventImg" value="/images/event-2.jpg"/>
+				</p:column>				
+			</p:row>
+	</p:panelGrid>
+	-->
+	<p:layoutUnit position="north" size="120"  >
+	  <h:panelGrid columns="1">
+		<h:graphicImage alt="SRCM Seminar Registration" id="eventImg" value="/images/event-2.jpg"/>
+		 <sec:authorize ifAllGranted="ROLE_ADMIN">
+         	<a href="#{request.contextPath}/app/logout">Logout #{currentUser.name}</a>
+       	 </sec:authorize>
+       </h:panelGrid>
+	</p:layoutUnit>
+	<p:layoutUnit position="center" minSize="800" maxSize="800">
+		<ui:insert name="content"/>
+	</p:layoutUnit>
+</p:layout>
+
+<p:ajaxStatus onstart="statusDialog.show();" onsucess="statusDialog.hide();"/>
+<p:dialog modal="true" widgetVar="statusDialog" header="status" draggable="false" closable="false">
+	<p:graphicImage value="/images/ajaxloadingbar.gif"/>
+</p:dialog>
+</h:body>
+</f:view>
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+	<p:panel header="Seminar Details and Attachments">
+	
+	<p:panelGrid style="margin-top:20px">  
+	    <f:facet name="header">  
+	         
+			<p:row>  
+	            <p:column>Seminar Title</p:column>  
+	            <p:column>Seminar Theme</p:column>  
+	            <p:column>Seminar Description</p:column>  
+	            <p:column>Dates</p:column>  
+	            <p:column>Seminar Location</p:column>  
+	        </p:row>  
+	    </f:facet>  
+	  
+		<p:row>  
+            <p:column>#{registrantWebBean.selectedSeminar.title}</p:column>  
+            <p:column>#{registrantWebBean.selectedSeminar.theme}</p:column>  
+            <p:column>#{registrantWebBean.selectedSeminar.desc}</p:column>  
+            <p:column>
+				<h:outputText value="#{registrantWebBean.selectedSeminar.startDt}">
+					<f:convertDateTime pattern="MMM d, yyyy"/>
+				</h:outputText>
+				<h:outputText value=" -- "/>
+				<h:outputText value="#{registrantWebBean.selectedSeminar.endDt}">
+					<f:convertDateTime pattern="MMM d, yyyy"/>
+				</h:outputText>
+	        </p:column>  
+	        <p:column>
+			    <h:outputText value="#{registrantWebBean.selectedSeminar.location}" />
+			    <h:outputText value=" -- "/>
+			    <h:outputText value="#{registrantWebBean.selectedSeminar.city}" />
+			    <h:outputText value=", "/>
+			    <h:outputText value="#{registrantWebBean.selectedSeminar.countryEntry.countryName}" />
+	         </p:column>  
+	    </p:row>  
+	  
+	</p:panelGrid>  
+	
+	
+	
+	
+ 		 <p:dataTable id="attachmentsId" var="file" rendered="#{registrantWebBean.filesForSeminar.size()!=0}" value="#{registrantWebBean.filesForSeminar}">
+	 	 	
+       		<p:column headerText="More Seminar Details">  
+           		<p:commandLink id="downloadLink" value="#{file.displayFileName}" ajax="false" icon="ui-icon-arrowthichk-s">  
+   					<p:fileDownload value="#{file.fileToDownload}" />  
+				 </p:commandLink>
+       		</p:column>
+	 	 </p:dataTable>
+ 	</p:panel>
+
+</ui:composition>

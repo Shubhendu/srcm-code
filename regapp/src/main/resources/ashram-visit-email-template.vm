@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<body>
+Dear Brother/Sister,<br/><br/>
+
+Thank you for requesting a visit at $city Ashram. We will contact you to confirm your request or if for any reason it cannot be confirmed. Your registration helps us greatly to prepare for all visitors to keep the records of ashram usage we are required to maintain. We hope to see you at $city soon. <br/><br/>
+
+<b>Registration Number :</b> $registrationNumber<br/>
+<i>Please use this number for all enquiries.</i><br/>
+
+<br/><b>Seminar:</b><br/>
+
+<i>
+$seminarDescription
+</i><br/>
+
+<br/><b>Contact information:</b><br/>
+<i>Caretaker: $coordinatorPhone or AMC: $coordinatorEmail</i>
+
+
+<br/><b>Location:</b><br/>
+<i>$seminarLocation<br/>
+$address , $city , $zip</i>
+
+<br/><b>Primary Registrant :</b><br/><br/>
+		<div style="padding-left:5em">
+		<table style="border:1px solid black;border-collapse:collapse;">
+			<tr>
+				<th style="border:1px solid black;">Name</th>
+				<th style="border:1px solid black;">Arrival Date</th>
+				<th style="border:1px solid black;">Arrival Time</th>
+				<th style="border:1px solid black;">Departure Date</th>
+				<th style="border:1px solid black;">Departure Time</th>
+			</tr>
+			<tr><td style="border:1px solid black;">$firstName $lastName</td><td style="border:1px solid black;">$arrivalDate</td><td style="border:1px solid black;">$arrivalTime</td><td style="border:1px solid black;">$departureDate</td><td style="border:1px solid black;">$departureTime</td></tr>
+		</table>
+		</div>
+#if($otherRegistrants.size()>0)        
+<br/><b>Other Registrants : </b><br/>
+      <div style="padding-left:5em">
+      <table style="border:1px solid black;border-collapse:collapse;">
+      		<tr>
+				<th style="border:1px solid black;">Name</th>
+				<th style="border:1px solid black;">Age Group</th>
+			</tr>
+      	#foreach($otherRegistrant in $otherRegistrants)
+			 <tr><td style="border:1px solid black;">$otherRegistrant.getFirstName() $otherRegistrant.getLastName()</td><td style="border:1px solid black;">$otherRegistrant.getAgeRange()</td></tr>     	
+      	#end
+      </table>
+      </div>
+#end
+<br/><br/>
+Warm regards,<br/>
+$city Ashram Team
+<br/>
+</body>
+</html>

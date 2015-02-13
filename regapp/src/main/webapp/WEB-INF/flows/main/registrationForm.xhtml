@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/tags">
+<style type="text/css">
+    
+   </style>	
+	
+
+			<p:panelGrid rendered="#{!registrantWebBean.completedAdd}" columns="4" styleClass="staticGrid_4">
+					<f:facet name="header">
+		    			<b>Registration Form</b>
+					</f:facet>
+			
+					
+					<h:outputLabel for="lastName" value="Last Name: *" />
+					<p:inputText id="lastName" value="#{registrant.lastName}" label="lastName" required="true" maxlength="45"/>
+					<h:outputLabel for="firstName" value="First Name: *" />
+					<p:inputText id="firstName" value="#{registrant.firstName}" label="firstName" required="true" maxlength="45"/>
+
+<ui:remove>
+					<h:outputLabel for="middleName" value="Middle Name: " />
+					<p:inputText id="middleName" value="#{registrant.middleName}" label="middleName" maxlength="45"/>
+</ui:remove>					
+					<h:outputLabel for="age" value="Age: *" />
+					<p:selectOneMenu value="#{registrant.age}" id="age" label="age" validator="#{registrantWebBean.validateAgeRange}" validatorMessage="Age not selected">
+            			<f:selectItem itemValue="#{registrantWebBean.ageNotSelectedConst}" itemLabel="Choose" />
+            		 	<f:selectItems value="#{registrantWebBean.ageRanges}" var="ageRange" 
+            		 	 					itemValue="#{ageRange.value}" itemLabel="#{ageRange.label}"/>
+            		 	<!--   <p:ajax listener="#{registrantWebBean.handleAgeChange}" async="true" update="paymentAmount" global="false" /> -->
+            		</p:selectOneMenu>
+            		
+            		<h:outputLabel for="gender" value="Gender: " />
+					 <p:selectOneMenu id="gender" label="gender" value="#{registrant.gender}">
+            			<f:selectItem itemLabel="Male" itemValue="M" />  
+            			<f:selectItem itemLabel="Female" itemValue="F" />  
+        			</p:selectOneMenu>
+					
+					<c:if test="${flowExecutionContext.activeSession.state.id == 'registration'}">
+						<h:outputLabel for="emailAddr" value="Email Address: *" />
+						<p:inputText id="emailAddr" value="#{registrant.email}" label="emailAddr" required="true" validatorMessage="Invalid Email" maxlength="45">
+							<f:validateRegex pattern="[a-zA-Z0-9]+[_.a-zA-Z0-9]+@[a-zA-Z]+[-_.a-zA-Z]+.[a-zA-Z]{2,3}"></f:validateRegex>
+						</p:inputText>	
+					</c:if>
+					<c:if test="${flowExecutionContext.activeSession.state.id == 'childRegistrant'}">
+						<h:outputLabel for="emailAddr" value="Email Address: " />
+						<p:inputText id="emailAddr" value="#{registrant.email}" label="emailAddr" maxlength="45"/>
+					</c:if>
+					
+					<h:outputLabel for="abhyasiId" value="Abhyasi ID: " />
+					<p:inputText id="abhyasiId" value="#{registrant.abhyasiId}" label="abhyasiId" maxlength="15"/>
+					
+
+					<h:outputLabel for="phoneNbr" value="Primary Phone Number: *" />
+					<p:inputText id="phoneNbr" value="#{registrant.primaryPh}" label="phoneNbr" required="true" maxlength="20"/>
+									
+
+        			<h:outputLabel for="emergencyPh" value="Emergency Phone: *" />
+					<p:inputText id="emergencyPh" value="#{registrant.emergencyPh}" label="emergencyPh" required="true" maxlength="20"/>
+
+					<p:outputLabel for="closestCenterName" value="Closest Center Name: " />
+					<p:inputText id="closestCenterName" value="#{registrant.closestCenterName}" label="closestCenterName"  required="true" maxlength="45"/>
+					
+					<h:outputLabel for="prefectName" value="Prefect Name: "  />
+					<p:inputText id="prefectName" value="#{registrant.prefectName}" label="prefectName"   maxlength="75"/>
+					
+					
+					<h:outputLabel for="ccStreetAddress" value="Abhyasi Street Address: " rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}"/>
+					<p:inputText id="ccStreetAddress" value="#{registrant.ccStreetAddress}" label="ccStreetAddress"  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}" maxlength="45"/>
+					
+					<h:outputLabel for="ccCityDetail" value="City: "  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}" />
+					<p:inputText id="ccCityDetail" value="#{registrant.ccCityDetail}" label="ccCityDetail" maxlength="75"  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}"/>
+					<h:outputLabel for="ccState" value="State: "  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}"/>
+					<p:inputText id="ccState" value="#{registrant.ccState}" label="ccState"  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}" maxlength="45"/>
+					
+					<h:outputLabel for="ccZip" value="Zip: "  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}"/>
+					<p:inputText id="ccZip" value="#{registrant.ccZip}" label="ccZip"  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}" maxlength="15"/>
+					<h:outputLabel for="ccCountry" value="Country: "  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}"/>
+					<p:inputText id="ccCountry" value="#{registrant.ccCountry}" label="ccCountry"  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}" maxlength="45"/>
+					
+					<h:outputLabel for="otherPh" value="Other Phone Number: "  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}"/>
+					<p:inputText id="otherPh" value="#{registrant.otherPh}" label="otherPh"  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}" maxlength="20" />
+<ui:remove>									
+					<h:outputLabel for="prefectEmail" value="Prefect Email: "  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}" />
+					<p:inputText id="prefectEmail" value="#{registrant.prefectEmail}" label="prefectEmail"  rendered="#{registrantWebBean.selectedSeminar.addressNeeded eq 'true'}" maxlength="45"/>
+</ui:remove>					
+					
+					<h:outputLabel for="arrivalDate" value="Arrival Date and Time: *" />
+					<p:calendar  id="arrivalDate" value="#{registrant.arrivalDate}" pattern="MM/dd/yyyy HH:mm a" label="arrivalDate" required="true" />
+					<ui:remove>
+					<h:outputLabel for="arrivalTime" value="Please enter your closest estimated time of arrival: " />				
+					<p:calendar id="arrivalTime" value="#{registrant.arrivalTime}" pattern="HH:mm a" timeOnly="true" />
+					</ui:remove>
+					<h:outputLabel for="departureDate" value="Departure Date and time: *" />
+					<p:calendar id="departureDate" value="#{registrant.departureDate}" pattern="MM/dd/yyyy HH:mm a" label="departureDate" required="true" validator="#{registrantWebBean.validateDateRange}" validatorMessage="Departure date should be after arrival date"/>
+					<ui:remove>
+					<h:outputLabel for="departureTime" value="Please enter your closest estimated time of departure: " />
+					<p:calendar id="departureTime" value="#{registrant.departureTime}" pattern="HH:mm a" timeOnly="true"  />
+					</ui:remove>
+					
+					
+					<h:outputLabel for="needAccom" value="Need Accommodation?: " />
+					<p:selectOneMenu value="#{registrant.beddingNeeded}"  id="needAccom" label="needAccom" validator="#{registrantWebBean.validateAccomodation}" validatorMessage="Preferred Accommodation should be selected" >		  
+            			<f:selectItem itemLabel="No" itemValue="N" /> 
+            			<f:selectItem itemLabel="Yes" itemValue="Y" />
+            			<p:ajax event="change" process="@this" async="true" update="preferredAccomodationId" global="false" />           	
+            		</p:selectOneMenu>
+            		
+            		<h:outputLabel for="preferredAccomodationId" value="Preferred Accomodation: " />
+					<p:selectOneMenu value="#{registrant.preferredAccomodation}" id="preferredAccomodationId" label="preferredAccomodation"  maxlength="45" disabled="#{registrant.beddingNeeded=='N'}">
+						<f:selectItem itemLabel="Not Selected" itemValue="" /> 
+						<f:selectItem itemLabel="Request stay at abhyasi house" itemValue="Request stay at abhyasi house" /> 
+						<f:selectItem itemLabel="Request stay at ashram" itemValue="Request stay at ashram" />
+						<f:selectItem itemLabel="Will arrange myself" itemValue="Will arrange myself" /> 
+					</p:selectOneMenu>
+					
+        			<ui:remove>
+					<h:outputLabel for="arrivalPickupNeeded" value="Need pickup at arrival?: " />
+					<p:selectOneMenu value="#{registrant.arrivalPickupNeeded}" id="arrivalPickupNeeded" label="arrivalPickupNeeded">
+						<f:selectItem itemLabel="No" itemValue="N" /> 
+						<f:selectItem itemLabel="Yes" itemValue="Y" />  
+					</p:selectOneMenu>
+					<h:outputLabel for="departureDropoffNeeded" value="Need drop off at departure?: " />
+					<p:selectOneMenu value="#{registrant.departureDropoffNeeded}" id="departureDropoffNeeded" label="departureDropoffNeeded">
+						<f:selectItem itemLabel="No" itemValue="N" /> 
+						<f:selectItem itemLabel="Yes" itemValue="Y" />  
+					</p:selectOneMenu>
+					
+					
+        			<h:outputLabel for="firstVisit" value="Is this your first seminar or ashram visit?: " />
+					<p:selectOneMenu value="#{registrant.firstVisit}" id="firstVisit" label="firstVisit">
+						<f:selectItem itemLabel="No" itemValue="N" />
+						<f:selectItem itemLabel="Yes" itemValue="Y" />  						 
+					</p:selectOneMenu>
+					 
+					<h:outputLabel for="volWrk" value="Volunteer work?: " />
+					<p:selectOneMenu id="volWrk" label="volWrk" value="#{registrant.volunteer}">
+						 <f:selectItems value="#{lookupBean.volunteerWorkTypes}" var="volunteerWorkType" itemLabel="#{volunteerWorkType.type}" itemValue="#{volunteerWorkType.id}"/>
+					</p:selectOneMenu>
+					
+					
+        			<h:outputLabel for="specReq" value="Any special requirement: " />
+					<p:inputTextarea id="specReq" rows="5" cols="10" label="specReq" maxlength="255" autoResize="false" value="#{registrant.specialNotes1}"/>
+					<p:watermark for="specReq" value="Enter dietary needs,pick-up or drop-off location etc.," />
+					</ui:remove>
+				</p:panelGrid>
+				
+				<p:panelGrid rendered="#{(!registrantWebBean.completedAdd) and  (registrant.seminarRegistrantCustFlds.size()>0)}" columns="2" styleClass="staticGrid_4">
+			
+				<table class="noBorder" >
+					 <ui:repeat value="${registrant.seminarRegistrantCustFlds}" var="custField" varStatus="begin">				    
+					 <tr>
+	                 <td>
+									<h:outputLabel  value="#{custField.seminarCustomField.fieldLabelText}" styleClass="noBorder" />
+					</td>
+									
+					<td>			<!-- Text field -->
+									<p:inputText id="inputText" value="#{custField.value}" label="#{custField.seminarCustomField.fieldLabel}"  rendered="#{custField.seminarCustomField.fieldType == 0}"  maxlength="15" required="#{custField.seminarCustomField.requiredBoolean}" styleClass="noBorder"/>              
+									
+									
+									
+									<!-- Text Area-->
+									<p:inputTextarea id="inputTextarea" value="#{custField.value}" label="#{custField.seminarCustomField.fieldLabel}"  rendered="#{custField.seminarCustomField.fieldType == 1}"  maxlength="512" required="#{custField.seminarCustomField.requiredBoolean}" styleClass="noBorder"/>
+									
+									
+				
+									<!-- Drop Down -->
+								    <p:selectOneMenu id="selectOneMenu" value="#{custField.value}"
+								                     rendered="#{custField.seminarCustomField.fieldType == 2}"    required="#{custField.seminarCustomField.requiredBoolean}"   maxlength="45" styleClass="noBorder" >
+								        <f:selectItem itemLabel="- Choose One -" itemValue="" />
+								        <f:selectItems value="#{custField.seminarCustomField.fieldValueChoices}" />
+								    </p:selectOneMenu>
+								    
+				                	<!-- Radio Button --> 
+				                	<p:selectOneRadio  id="selectOneRadio" value="#{custField.value}"
+								                     rendered="#{custField.seminarCustomField.fieldType == 3}"    required="#{custField.seminarCustomField.requiredBoolean}"   maxlength="45" style='width:220px' styleClass="noBorder">
+								        <f:selectItems value="#{custField.seminarCustomField.fieldValueChoices}" var="c" itemLabel="#{c}" itemValue="#{c}"/>
+								    </p:selectOneRadio>              
+				                	<!-- Check Boxes --> 
+				                	<p:selectManyCheckbox  id="selectManyCheckbox" value="#{custField.selectedChkBoxOptions}"
+								                     rendered="#{custField.seminarCustomField.fieldType == 4}"   required="#{custField.seminarCustomField.requiredBoolean}"    maxlength="45" style='width:220px' styleClass="noBorder" >
+								        <f:selectItems value="#{custField.seminarCustomField.fieldValueChoices}" var="c" itemLabel="#{c}" itemValue="#{c}" style="border:none;"/>
+								    </p:selectManyCheckbox>    
+								    
+				    </td>             
+					</tr>
+				        			  
+				     </ui:repeat>	
+			     </table>
+			   </p:panelGrid>
+			  
+			    
+			    
+				
+			   
+			    
+</ui:composition>

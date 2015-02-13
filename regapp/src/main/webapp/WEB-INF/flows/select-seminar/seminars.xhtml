@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	template="/WEB-INF/layouts/standard.xhtml">
+
+	<ui:define name="content">
+	 <h:form>
+		<p:dataTable var="seminar" value="#{seminarList}">
+		 <p:column headerText="Seminar Title">
+		  <h:outputText value="#{seminar.title}" />
+		 </p:column>
+		 <p:column headerText="Seminar Theme">
+		  <h:outputText value="#{seminar.theme}" />
+		 </p:column>
+		 <p:column headerText="Seminar Description">
+		   <h:outputText value="#{seminar.desc}" />
+		 </p:column>
+		 <p:column headerText="Dates">
+		   <h:outputText value="#{seminar.startDt}">
+		     <f:convertDateTime pattern="MMM d, yyyy"/>
+		   </h:outputText>
+		   <h:outputText value=" -- "/>
+		    <h:outputText value="#{seminar.endDt}">
+		     <f:convertDateTime pattern="MMM d, yyyy"/>
+		   </h:outputText>
+		 </p:column>
+		 <p:column headerText="Seminar Location">
+		  <h:outputText value="#{seminar.location}" />
+		  <h:outputText value=" -- "/>
+		  <h:outputText value="#{seminar.city}" />
+		  <h:outputText value=", "/>
+		  <h:outputText value="#{seminar.countryEntry.countryName}" />
+		 </p:column>
+		  <p:column headerText="Actions">
+		    <p:commandButton value="Select" action="selectSeminar" ajax="false">
+		     <f:setPropertyActionListener target="#{registrantWebBean.selectedSeminar}" value="#{seminar}"/>
+		    </p:commandButton>
+		 </p:column>
+		</p:dataTable>
+	  </h:form>
+	</ui:define>
+</ui:composition>

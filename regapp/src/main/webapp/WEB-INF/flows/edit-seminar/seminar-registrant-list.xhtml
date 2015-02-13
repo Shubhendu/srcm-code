@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	template="/WEB-INF/layouts/standard.xhtml">
+
+	<ui:define name="content">
+	<style>
+	 .old {
+    	background-color: #6CE26C !important;
+    	background-image: none !important;
+    	color: #000000 !important;
+    	
+	  }
+	</style>
+	 <h:form>
+	 <h:panelGrid columns="1">
+	 <!--  <p:panel header='Registrations for "#{seminar.title}"'> -->
+		<p:dataTable id="regTbl" var="registration" value="#{registrationList}"
+									rowStyleClass="#{registration.primaryRegistrant == 'Yes' ? 'old' : null}">
+		 	<f:facet name="header">Registrations for "#{seminar.title}"</f:facet>
+		    <p:column>
+		       <f:facet name="header">Abhyasi ID</f:facet>
+		       <h:outputText value="#{registration.abhyasiId}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">First Name </f:facet>
+		    	<h:outputText value="#{registration.firstName}" />
+		    </p:column>
+		    <ui:remove>
+		    <p:column>
+		    	<f:facet name="header">Middle Name </f:facet>
+		    	<h:outputText value="#{registration.middleName}" />
+		    </p:column>
+		    </ui:remove>
+		    <p:column>
+		    	<f:facet name="header">Last Name </f:facet>
+		    	<h:outputText value="#{registration.lastName}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Is Primary Registrant?</f:facet>
+		    	<h:outputText value="#{registration.primaryRegistrant}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Primary Registrant Name</f:facet>
+		    	<h:outputText value="#{registration.seminarRegistrant.firstName} #{registration.seminarRegistrant.lastName}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Email Address</f:facet>
+		    	<h:outputText value="#{registration.email}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Primary Phone#/Emergency#/Other#</f:facet>
+		    	<h:outputText value="#{registration.primaryPh} #{registration.emergencyPh} #{registration.otherPh}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Gender</f:facet>
+		    	<h:outputText value="#{registration.gender}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Age</f:facet>
+		    	<h:outputText value="#{registration.ageRange}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Arrival Date Time</f:facet>
+		    	<h:outputText value="#{registration.arrivalDate}">
+        			<f:convertDateTime pattern="MMM d, yyyy h:mm a"/>
+        		</h:outputText>       		
+        		&nbsp;&nbsp; <ui:remove>	
+        		<h:outputText value="#{registration.arrivalTimeAsDate}">
+        			<f:convertDateTime pattern="h:mm a"/>
+        		</h:outputText></ui:remove>
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Departure Date Time</f:facet>
+		    	<h:outputText value="#{registration.departureDate}">
+		     		<f:convertDateTime pattern="MMM d, yyyy h:mm a"/>
+		   		</h:outputText>
+		   		&nbsp;&nbsp;<ui:remove>
+		   		<h:outputText value="#{registration.departureTimeAsDate}">
+		     		<f:convertDateTime pattern="h:mm a"/>
+		   		</h:outputText></ui:remove>
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Accomdation</f:facet>
+		    	<h:outputText value="#{registration.beddingNeeded}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Preferred Accomodation</f:facet>
+		    	<h:outputText value="#{registration.preferredAccomodation}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Volunteer?</f:facet>
+		    	<h:outputText value="#{registration.volunteerType.type}" />
+		    </p:column>
+		    <ui:remove>
+		    <p:column>
+		    	<f:facet name="header">Arrival Pickup?</f:facet>
+		    	<h:outputText value="#{registration.arrivalPickupNeeded}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Depart drop off?</f:facet>
+		    	<h:outputText value="#{registration.departureDropoffNeeded}" />
+		    </p:column>
+		    </ui:remove>
+		    <p:column>
+		    	<f:facet name="header">Center Address</f:facet>
+		    	<h:outputText value="#{registration.closestCenterName} #{registration.ccStreetAddress} #{registration.ccCityDetail} #{registration.ccCountry}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Prefect</f:facet>
+		    	<h:outputText value="#{registration.prefectName}" />
+		    </p:column>
+		    <ui:remove>
+		    <p:column>
+		    	<f:facet name="header">Prefect Email</f:facet>
+		    	<h:outputText value="#{registration.prefectEmail}" />
+		    </p:column>
+		    </ui:remove>
+		    <p:column>
+		    	<f:facet name="header">First Visit?</f:facet>
+		    	<h:outputText value="#{registration.firstVisit}" />
+		    </p:column>    
+		    <p:column>
+		    	<f:facet name="header">Any special requirement</f:facet>
+		    	<h:outputText value="#{registration.specialNotes1}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Custom Fields</f:facet>
+		    	<h:outputText value="#{registration.custFieldsAsString}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Total</f:facet>
+		    	<h:outputText value="#{registration.registrantsCount}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Donation Amount Paid</f:facet>
+		    	<h:outputText value="#{registration.amountToPay}" />
+		    </p:column>
+		    <p:column>
+		    	<f:facet name="header">Transaction Id</f:facet>
+		    	<h:outputText value="#{registration.ccTransactionNo}" />
+		    </p:column>
+		
+		</p:dataTable>
+	   
+		<p:panel header="Export All Data">
+			<h:commandLink>
+				<p:graphicImage value="/images/excel.png" />
+				<p:dataExporter type="xls" target="regTbl" fileName="registrations" />
+			</h:commandLink>
+			<!-- <h:commandLink>
+				<p:graphicImage value="/images/pdf.png" />
+				<p:dataExporter type="pdf" target="regTbl" fileName="registrations" />
+			</h:commandLink>-->
+			<p:commandButton action="cancel" value="Back to Seminar List" ajax="false" style="font-weight:900;float:right" immediate="true"/>
+		</p:panel>
+	  </h:panelGrid>
+	  </h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	template="/WEB-INF/layouts/standard.xhtml">
+
+	<ui:define name="content">
+	 <h:form>
+	    <!--  <h:panelGrid columns="1">-->
+	    <p:commandLink id="addSeminarId" action="addOrEditSeminar" value="Add Seminar" ajax="false" immediate="true"/>
+		<p:dataTable var="seminar" value="#{seminarList}">
+		 <p:column headerText="Seminar Title">
+		  <h:outputText value="#{seminar.title}" />
+		 </p:column>
+		 <p:column headerText="Seminar Description">
+		   <h:outputText value="#{seminar.desc}" />
+		 </p:column>
+		 <p:column headerText="From -- To">
+		   <h:outputText value="#{seminar.startDt}">
+		     <f:convertDateTime pattern="MMM d, yyyy"/>
+		   </h:outputText>
+		   <h:outputText value=" -- "/>
+		    <h:outputText value="#{seminar.endDt}">
+		     <f:convertDateTime pattern="MMM d, yyyy"/>
+		   </h:outputText>
+		 </p:column>
+		  <p:column headerText="Actions">
+		    <p:commandLink value="Edit Seminar" action="addOrEditSeminar" ajax="false" style="color:blue">
+		      <f:setPropertyActionListener target="#{seminarWebBean.selectedSeminar}" value="#{seminar}"/>
+		    </p:commandLink>
+		    <br/>
+		    <p:commandLink value="Registrations" action="getSeminarRegistrations" ajax="true" style="color:blue" process="@this">
+		      <f:setPropertyActionListener target="#{seminarWebBean.selectedSeminar}" value="#{seminar}"/>
+		    </p:commandLink>
+		 </p:column>
+		</p:dataTable>
+		 <!--</h:panelGrid>-->
+	  </h:form>
+	</ui:define>
+</ui:composition>

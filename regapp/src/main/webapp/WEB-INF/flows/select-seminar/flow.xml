@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+ 
+ 	<input name="registrantWebBean" type="org.srcm.gems.regapp.web.RegistrantWebBean"/>
+ 		
+ 	<view-state id="seminars">
+ 	  <on-entry>
+ 	   <evaluate expression="registrationDao.getAllSeminars()" result="flowScope.seminarList"/>
+ 	  </on-entry>
+ 	  <transition on="selectSeminar" to="selectedSeminarState"/>
+	</view-state>
+	
+	<end-state id="selectedSeminarState">
+	 <output name="selectedSeminar" value="registrantWebBean.selectedSeminar"/>
+	</end-state>
+	
+	
+
+</flow>

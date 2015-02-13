@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+	<p:panelGrid  rendered="#{registrantWebBean.primaryRegistrant !=null}" style="margin-top:20px">
+	  
+				    <f:facet name="header">  
+				    	<p:row>
+				    		<p:column colspan="5">Primary Registrant</p:column>
+				    	</p:row>
+				        <p:row>
+				        	<p:column>Abhyasi ID</p:column>
+				        	<p:column>First Name</p:column>	
+				        	<p:column>Last Name</p:column>				        	
+				        	<p:column>Gender</p:column>				        	
+				        	<p:column>Age</p:column>
+				        </p:row>
+				    </f:facet>
+			        <p:row>
+			        	<p:column>#{registrantWebBean.primaryRegistrant.abhyasiId}</p:column>
+			        	<p:column>#{registrantWebBean.primaryRegistrant.firstName}</p:column>	
+			        	<p:column>#{registrantWebBean.primaryRegistrant.lastName}</p:column>				        	
+			        	<p:column>#{registrantWebBean.primaryRegistrant.gender}</p:column>				        	
+			        	<p:column>#{registrantWebBean.primaryRegistrant.ageRange}</p:column>
+			        </p:row>
+	</p:panelGrid>
+	<p:panelGrid rendered="#{registrantWebBean.showDependents}" style="width:100%" columns="1">
+			<f:facet name="header">
+    			<b>Additional Registrants</b>
+			</f:facet>
+			
+			<p:dataTable value="#{registrantWebBean.seminarRegistrantDataModel}"
+			var="dependent" style="border:none;">
+											      
+		         <p:column headerText="Abhyasi ID">  
+		            #{dependent.abhyasiId}
+		         </p:column>
+		         <p:column headerText="First Name">  
+		            #{dependent.firstName}
+		         </p:column>
+		         <p:column headerText="Last Name">  
+		            #{dependent.lastName}
+		         </p:column>
+		         <p:column headerText="Gender">  
+		            #{dependent.gender}
+		         </p:column>
+		         <p:column headerText="Age">  
+		            #{dependent.ageRange}
+		         </p:column>
+	
+		         <p:column headerText="Delete" style="width:40px;align:center">
+					<p:commandButton action="removeDependent" ajax="false"
+						update="@form" image="ui-icon ui-icon-trash">
+						<f:setPropertyActionListener target="#{registrantWebBean.dependent}" value="#{dependent}" />
+					</p:commandButton>
+		         </p:column>
+			
+		</p:dataTable>
+	</p:panelGrid>
+
+</ui:composition>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+ 	<view-state id="seminars">
+ 	  <on-entry>
+ 	   <evaluate expression="seminarWebBeanProto" result="flowScope.seminarWebBean"/>
+ 	   <evaluate expression="seminarDao.getAllSeminars()" result="flowScope.seminarList"/>
+ 	  </on-entry>
+ 	  <transition on="addOrEditSeminar" to="seminarSubFlow"/>
+ 	  <transition on="getSeminarRegistrations" to="seminarRegSubFlow"/>
+	</view-state>
+	
+	<subflow-state id="seminarSubFlow" subflow="edit-seminar">
+	  <input name="seminarWebBean" value="flowScope.seminarWebBean"/>
+	  <input name="toAction" value="'editSeminar'"/>
+	  <transition on="editSeminarEnd" to="seminars"/>
+	  <transition on="cancel" to="seminars"/>
+	</subflow-state>
+	
+	<subflow-state id="seminarRegSubFlow" subflow="edit-seminar">
+	  <input name="seminarWebBean" value="flowScope.seminarWebBean"/>
+	  <input name="toAction" value="'seminarRegistrations'"/>
+	  <transition on="editSeminarEnd" to="seminars"/>
+	  <transition on="cancel" to="seminars"/>
+	</subflow-state>
+	
+	<end-state id="selectedSeminarState">
+	 <output name="selectedSeminar" value="registrantWebBean.selectedSeminar"/>
+	</end-state>
+	
+	
+
+</flow>

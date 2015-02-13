@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+
+		 <p:panelGrid  rendered="#{registrantWebBean.completedAdd}" cellpadding="0" styleClass="panelNoBorder" >
+					
+					 <p:row rendered="#{registrantWebBean.selectedSeminar.donationAccount != 0}">
+						<p:column>
+							<p:selectOneRadio style='width:220px' id="paymentOptions" value="#{registrant.payThruWeb}" validator="#{registrantWebBean.validateAmountPaid}">		           
+								<f:selectItem itemLabel="Pay Now" itemValue="Yes" />
+					            <f:selectItem itemLabel="Pay Later" itemValue="No" />
+					            <p:ajax event="change" process="@this" async="true" update="paymentAmount" global="false" /> 
+					        </p:selectOneRadio>
+							
+							<i>Only VISA and MASTERCARD are accepted. Please *note* American Express cards, Debit cards, and E-checks will *NOT* be Accepted</i>
+						
+							
+						</p:column>
+						
+						<p:column>
+								<h:outputLabel for="paymentAmount" value="Donation Amount: " />
+							 	<p:inputText id="paymentAmount" value="#{registrant.amountToPay}" label="paymentAmount" maxlength="6" disabled="#{registrant.payThruWeb=='No'}"/>
+								
+						</p:column>											
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<i>I understand that SRCM will not be responsible for accidents or injury to abhyasis and/or visitors or for damage or loss of money, personal property or valuables of any kind. Abhyasis and/or visitors shall hold SRCM harmless and agree to indemnify SRCM from any and all liabilities. Abhyasi and their guests agree to follow the rules set by Seminar Committee.</i>
+						</p:column>
+					</p:row>
+				
+					<p:row>
+						<p:column colspan="2">
+							<i>I Accept : </i>
+							
+							 <p:selectOneRadio style='width:35px' id="options" value="#{registrant.acceptDisclaimer}">
+					            <f:selectItem itemLabel="Yes" itemValue="Yes" />
+					            <f:selectItem itemLabel="No" itemValue="No" />
+					        </p:selectOneRadio>
+						</p:column>											
+					</p:row>
+					
+					
+					<p:row>
+					<!-- 
+					<p:commandButton value="Add More Registrant" icon="ui-icon-plus"
+						style="margin:0;float:center" ajax="false" onclick="this.disable=true" action="addRegistrant"/>
+					 
+					<p:commandButton action="cancelDependent" icon="ui-icon-close"
+						value="Cancel Additional Registrant" style="margin:0;float:center" immediate="true"/>
+					 -->
+					 <p:column colspan="1" style="border:none;" >	
+						<p:commandButton value="Confirm and Save Registration" icon="ui-icon-check"
+						style="float:left" ajax="false" onclick="this.disable=true" action="saveRegistration"/>
+					</p:column>
+					<p:column colspan="1" style="border:none;" >	
+						<p:commandButton action="backToLogin" value="Back to Seminar List" style="float:right" immediate="true"/>
+					</p:column>
+					</p:row> 
+
+					
+				</p:panelGrid>
+				
+				
+
+
+</ui:composition>

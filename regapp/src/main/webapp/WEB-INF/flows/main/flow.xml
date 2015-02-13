@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<input name="registrantWebBean" type="org.srcm.gems.regapp.web.RegistrantWebBean"/>
+	<input name="seminarSelected" type="java.lang.Boolean"/>
+
+ 	<decision-state id="checkDirectURL">
+	  <if then="seminarSubFlow" test="flowScope.seminarSelected == null" else="main"/>
+	</decision-state>
+ 	
+ 	<subflow-state id="seminarSubFlow" subflow="select-seminar">
+ 	  <on-entry>
+ 	  	<evaluate expression="registrantWebBeanProto" result="flowScope.regWebBean"/>
+ 	  </on-entry>
+ 	  <input name="registrantWebBean" value="regWebBean"/>
+ 	  <transition on="selectedSeminarState" to="main">
+ 	   <evaluate expression="regWebBean" result="flowScope.registrantWebBean"/>
+ 	   <evaluate expression="registrantWebBean.setSelectedSeminar(currentEvent.attributes.selectedSeminar)"/>
+ 	  </transition>
+ 	</subflow-state>
+	
+	<view-state id="main">
+	  <transition on="newRegistration" to="registration">
+	    <evaluate expression="registrantWebBean.getNewRegistrationInstance(seminarCustomFieldDAO)" result="flowScope.registrant"/>
+	  </transition>
+	  <transition on="findRegistration" to="checkRegistrant">
+	    <evaluate expression="registrantWebBean.findRegistrant(registrationDao,messageContext)" result="flowScope.registrant"/>
+	  </transition>
+	  <transition on="backToLogin" to="seminarSubFlow"/>
+	</view-state>
+	
+	<view-state id="registrationSuccess">
+	  <transition on="newRegistration" to="registration">
+	    <evaluate expression="registrantWebBean.getNewRegistrationInstance(seminarCustomFieldDAO)" result="flowScope.registrant"/>
+	  </transition>
+	  <transition on="findRegistration" to="checkRegistrant">
+	    <evaluate expression="registrantWebBean.findRegistrant(registrationDao,messageContext)" result="flowScope.registrant"/>
+	  </transition>
+	  <transition on="backToLogin" to="seminarSubFlow"/>
+	</view-state>
+	
+	<decision-state id="checkRegistrant">
+	 <if then="main" test="flowScope.registrant == null" else="registration"/>
+	</decision-state>
+	
+	<view-state id="registration">
+	  <transition on="saveRegistration" to="registrationSuccess">
+	   <evaluate expression="registrantWebBean.saveRegistrant(registrationDao, mailManager, registrant,messageContext)" result="flowScope.registrant"/>
+	  </transition>
+	  
+	  <transition on="refreshDonationPayment" to="registration">
+	   <evaluate expression="registrantWebBean.refreshPayment(registrant)" result="flowScope.registrant"/>
+	  </transition>
+	  
+	  <transition on="completeAddingRegistrant" to="registration">
+	   <evaluate expression="registrantWebBean.completeAddingRegistrant(registrant)" result="flowScope.registrant"/>
+	  </transition>
+
+	  <transition on="addRegistrant" to="childRegistrant">
+	   <evaluate expression="registrantWebBean.addRegistrant(seminarCustomFieldDAO,registrant)" result="flowScope.registrant"/>
+	  </transition>
+	  <transition on="removeDependent" to="registration">
+	   <evaluate expression="registrantWebBean.removeDependent(registrationDao,registrant,messageContext)" result="flowScope.registrant"/>
+	  </transition>
+	  
+	  <transition on="backToLogin" to="seminarSubFlow"/>
+	</view-state>
+	
+	<view-state id="childRegistrant">
+	  <transition on="saveRegistration" to="registrationSuccess">
+	   <evaluate expression="registrantWebBean.saveRegistrants(registrationDao, mailManager,registrant,messageContext)" result="flowScope.registrant"/>
+	  </transition>
+	  <transition on="addRegistrant" to="childRegistrant">
+	   <evaluate expression="registrantWebBean.addMoreRegistrant(seminarCustomFieldDAO,registrant)" result="flowScope.registrant"/>
+	  </transition>
+	  <transition on="removeDependent" to="childRegistrant">
+	   <evaluate expression="registrantWebBean.removeDependent(registrationDao,messageContext)" result="flowScope.registrant"/>
+	  </transition>
+	  <transition on="cancelDependent" to="registration">
+	  	<evaluate expression="registrantWebBean.cancelDependent(registrationDao,messageContext)" result="flowScope.registrant"/>
+	  </transition>
+	 <transition on="refreshDonationPayment" to="childRegistrant">
+	   <evaluate expression="registrantWebBean.refreshPayment(registrant)" result="flowScope.registrant"/>
+	  </transition>	  
+	  
+	  <transition on="completeAddingRegistrant" to="childRegistrant">
+	   <evaluate expression="registrantWebBean.completeAddingRegistrant(registrant)" result="flowScope.registrant"/>
+	  </transition>
+	  
+	  <transition on="backToLogin" to="seminarSubFlow"/>
+	</view-state>
+	
+	<global-transitions>
+		<transition on="seminarMain" to="main" />
+	</global-transitions>
+
+</flow>

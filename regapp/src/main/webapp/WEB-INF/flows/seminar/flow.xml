@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+
+ 	<subflow-state id="mainSubFlow" subflow="main">
+ 	  <on-entry>
+ 	  	<evaluate expression="registrantWebBeanProto" result="flowScope.registrantWebBean"/>
+ 	   	<evaluate expression="registrantWebBean.retrieveSeminar(seminarDao,messageContext)" result="flowScope.seminarSelected"/>
+ 	  </on-entry>
+ 	  <input name="registrantWebBean"/>
+ 	  <input name="seminarSelected"/>
+ 	</subflow-state>
+ 	
+
+</flow>

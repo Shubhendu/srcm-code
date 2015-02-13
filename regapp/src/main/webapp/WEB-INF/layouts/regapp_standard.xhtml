@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
+<f:view contentType="text/html">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>SRCM Registration</title>
+	<link rel="stylesheet" href="${request.contextPath}/app/resources/styles/blueprint/screen.css" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="${request.contextPath}/app/resources/styles/blueprint/print.css" type="text/css" media="print" />
+	<link rel="stylesheet" href="${request.contextPath}/app/resources/styles/regapp.css" type="text/css"/>
+</h:head>
+<h:body>
+<div class="container">
+	 <p:panelGrid>
+			<p:row>
+				<p:column style="background-color: #bbc5c7;">
+					<h:graphicImage alt="SRCM Seminar Registration" id="eventImg" value="/images/event-2.jpg"/>
+				</p:column>				
+			</p:row>
+	</p:panelGrid>
+    <div>
+       <sec:authorize ifAllGranted="ROLE_ADMIN">
+         <a href="#{request.contextPath}/app/logout">Logout #{currentUser.name}</a>
+       </sec:authorize>
+    </div>
+	<ui:insert name="content"/>
+</div>
+ <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+ <p:dialog modal="true" widgetVar="statusDialog" header="Status" 
+        draggable="false" closable="false">
+	<p:graphicImage value="/images/ajaxloadingbar.gif" />
+</p:dialog>
+</h:body>
+</f:view>
+</html>
