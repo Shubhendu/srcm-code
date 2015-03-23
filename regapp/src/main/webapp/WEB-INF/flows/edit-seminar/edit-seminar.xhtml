@@ -72,24 +72,34 @@
 					 <f:selectItems value="#{lookupBean.seminarTypes}" var="seminarType" itemLabel="#{seminarType.type}" itemValue="#{seminarType.id}"/>
 				</p:selectOneMenu>
 			</div>
-			<div class="span-12">
+			
+			<div class="span-12" >
+			
+				<h:outputLabel for="semAdminId">#{messageSource['seminar.administrators']}: </h:outputLabel><br/>
+				<p:selectCheckboxMenu  id="semAdminId"  value="#{seminarWebBean.selectedUsersForSeminar}" label="Select" style="width:35%">
+           		 	<f:selectItems value="#{seminarWebBean.allUsers}" var="user" itemLabel="#{user}" itemValue="#{user}"/>
+           		</p:selectCheckboxMenu>
+           		
+			</div>
+			
+			<div class="span-10 last">
 				<h:outputLabel for="semCoorId">#{messageSource['seminar.coord']}: </h:outputLabel><br/>
 				<p:message for="semCoorId" styleClass="span-5"/>
 				<p:inputText id="semCoorId" label="#{messageSource['seminar.coord']}" value="#{seminar.coordinator}"/>
 			</div>
-			<div class="span-10 last">
+			<div class="span-12">
 				<h:outputLabel for="status">#{messageSource['seminar.status']}: </h:outputLabel><br/>
 				<p:selectOneMenu id="status" label="#{messageSource['seminar.status']}" value="#{seminar.status}">
 					 <f:selectItems value="#{lookupBean.seminarStatusTypes}" var="statusType" itemLabel="#{statusType.type}" itemValue="#{statusType.id}"/>
 				</p:selectOneMenu>
 			</div>
 			
-			<div class="span-12">
+			<div class="span-10 last">
 				<h:outputLabel for="coordinatorPhone">#{messageSource['seminar.coord.phone']}: </h:outputLabel><br/>
 				<p:message for="coordinatorPhone" styleClass="span-5"/>
 				<p:inputText id="coordinatorPhone" value="#{seminar.phone}" label="#{messageSource['seminar.coord.phone']}" maxlength="20"/>
 			</div>
-			<div class="span-10 last">
+			<div class="span-12">
 				<h:outputLabel for="coordinatorEmail">#{messageSource['seminar.coord.email']}: </h:outputLabel><br/>
 				<p:message for="coordinatorEmail" styleClass="span-5"/>
 				<p:inputText id="coordinatorEmail" value="#{seminar.email}" label="{messageSource['seminar.coord.email']}" validatorMessage="Invalid Email" maxlength="45">
@@ -97,7 +107,7 @@
 				</p:inputText>
 			</div>
 			
-			<div class="span-12 last">
+			<div class="span-10 last">
 				<h:outputLabel for="donationAccountType">#{messageSource['seminar.donationAccountType']}: </h:outputLabel><br/>
 				<p:message for="donationAccountType" styleClass="span-5"/>
 				<p:selectOneMenu value="#{seminar.donationAccount}" id="donationAccountType" label="age" validator="#{seminarWebBean.validateDonationAccountType}" validatorMessage="Donation Account Type not selected">
@@ -109,19 +119,25 @@
            		</p:selectOneMenu>
 			</div>
 			
-			<div class="span-10 last">
+			<div class="span-12">
 				<h:outputLabel for="addressNeeded">#{messageSource['seminar.addressNeeded']}: </h:outputLabel><br/>
 				<p:message for="addressNeeded" styleClass="span-5"/>
 				<p:selectBooleanCheckbox id="addressNeeded" value="#{seminar.addressNeeded}" />  
 			</div>
 			
 			
-			<div class="span-12">
+			<div class="span-10 last">
 				<h:outputLabel for="adultDonation">#{messageSource['seminar.adultDonation']}: </h:outputLabel><br/>
 				<p:message for="adultDonation" styleClass="span-5"/>
 				<p:inputText id="adultDonation" disabled="#{seminar.donationAccount == '0'}" value="#{seminar.adultDonation}" label="#{messageSource['seminar.adultDonation']}" required="true"  validatorMessage="Adult donation amount is required"/>
 			</div>
-			<div class="span-10 last">
+			<div class="span-12">
+				<h:outputLabel for="semDescId">#{messageSource['seminar.desc']}: </h:outputLabel><br/>
+				<p:message for="semDescId" styleClass="span-5"/>
+				<p:inputTextarea id="semDescId" label="#{messageSource['seminar.desc']}" value="#{seminar.desc}" rows="5" cols="30" autoResize="true"/>
+			</div>
+			
+			<div class="span-10 last ">
 				<h:outputLabel for="childDonation">#{messageSource['seminar.childDonation']}: </h:outputLabel><br/>
 				<p:message for="childDonation" styleClass="span-5"/>
 				<p:inputText id="childDonation" disabled="#{seminar.donationAccount == '0'}" value="#{seminar.childDonation}" label="{messageSource['seminar.childDonation']}"  required="true"  validatorMessage="Child donation amount is required"/>
@@ -130,12 +146,8 @@
 			
 			
 			
-			<div class="span-12 last">
-				<h:outputLabel for="semDescId">#{messageSource['seminar.desc']}: </h:outputLabel><br/>
-				<p:message for="semDescId" styleClass="span-5"/>
-				<p:inputTextarea id="semDescId" label="#{messageSource['seminar.desc']}" value="#{seminar.desc}" rows="5" cols="30" autoResize="true"/>
-			</div>
-			<div class="span-10 last">
+			
+			<div class="span-12">
 				<h:outputLabel for="attachUploadId">#{messageSource['file.attachment']}: </h:outputLabel><br/>
 				<p:message for="attachUploadId" styleClass="span-5"/>
 				<p:fileUpload id="attachUploadId" label="#{messageSource['file.attachment']}" value="#{seminarWebBean.uploadFile1}" mode="simple"/>

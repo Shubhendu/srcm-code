@@ -31,6 +31,7 @@ public class SeminarWebHelper implements PhaseListener{
 		
 		//Load relation so that it won't throw LazyInitializationException
 		seminarWebBean.setSelectedSeminar(seminarDao.loadSeminarCustFields(seminarWebBean.getSelectedSeminar()));
+		seminarWebBean.setSelectedUsersForSeminar(seminarWebBean.getSelectedUsersForSeminar()); //todo: change this to get only those users selected for a seminar
 		
 		//Needed a non-null selected field for edit-seminat.xhtml (popup included in the screen)
 		if(seminarWebBean.getSelectedField() == null){

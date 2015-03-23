@@ -25,9 +25,11 @@ import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 import org.srcm.gems.regapp.dao.SeminarDAO;
 import org.srcm.gems.regapp.dao.SeminarRegistrantDAO;
+import org.srcm.gems.regapp.dao.UserDAO;
 import org.srcm.gems.regapp.domain.Seminar;
 import org.srcm.gems.regapp.domain.SeminarCustomField;
 import org.srcm.gems.regapp.domain.SeminarRegistrant;
+import org.srcm.gems.regapp.domain.User;
 import org.srcm.gems.regapp.web.helper.SeminarWebHelper;
 import org.srcm.gems.regapp.web.util.AgeRange;
 import org.srcm.gems.regapp.web.util.CustomFieldType;
@@ -49,6 +51,10 @@ public class SeminarWebBean implements Serializable {
 	
 	private UploadFile selectedFile;
 
+	private List<String> allUsers;
+	
+	private List<String> selectedUsersForSeminar;
+	
 	public static final short donationAccountTypeNotSelectedConst = 999;
 	
 	public static final short customFieldTypeNotSelectedConst = 999;
@@ -276,6 +282,7 @@ public class SeminarWebBean implements Serializable {
 
 	}
 	
+	
 	public void validateCustomFieldType(FacesContext context, UIComponent component,
 			Object value) {
 		Short customFieldType = null;
@@ -315,6 +322,20 @@ public class SeminarWebBean implements Serializable {
 		return customFieldTypeNotSelectedConst;
 	}
 	
+
+	public List<String> getAllUsers(){
+		this.allUsers=new ArrayList<String>();
+		UserDAO userDao = (UserDAO)SeminarWebHelper.getBeanFromElContext("#{userDAO}");
+		List<User> userList = userDao.getAllUsers();
+		if(userList != null && !userList.isEmpty()){
+			for(User user: userList){
+				String username=user.getFirstName()+" "+user.getLastName();
+				this.allUsers.add(username);
+			}
+		}
+		return this.allUsers;
+	}
+	
 	@PostConstruct
 	void init()
 	{
@@ -322,5 +343,22 @@ public class SeminarWebBean implements Serializable {
 		selectedSeminar.setAdultDonation(0.0);
 		selectedSeminar.setChildDonation(0.0);
 		
+	}
+
+	public List<String> getSelectedUsersForSeminar() {
+		this.selectedUsersForSeminar=new ArrayList<String>();
+		UserDAO userDao = (UserDAO)SeminarWebHelper.getBeanFromElContext("#{userDAO}");
+		List<User> userList = userDao.getAllUsers();
+		if(userList != null && !userList.isEmpty()){
+			for(User user: userList){
+				String username=user.getFirstName()+" "+user.getLastName();
+				this.selectedUsersForSeminar.add(username);
+			}
+		}
+		return this.selectedUsersForSeminar;
+	}
+
+	public void setSelectedUsersForSeminar(List<String> selectedUsersForSeminar) {
+		this.selectedUsersForSeminar = selectedUsersForSeminar;
 	}
 }
