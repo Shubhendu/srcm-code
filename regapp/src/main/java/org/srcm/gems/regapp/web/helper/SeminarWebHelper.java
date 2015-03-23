@@ -13,11 +13,8 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.binding.message.MessageBuilder;
-import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 import org.srcm.gems.regapp.dao.SeminarDAO;
-import org.srcm.gems.regapp.domain.Seminar;
 import org.srcm.gems.regapp.domain.SeminarCustomField;
 import org.srcm.gems.regapp.web.bean.SeminarWebBean;
 
@@ -31,7 +28,7 @@ public class SeminarWebHelper implements PhaseListener{
 		
 		//Load relation so that it won't throw LazyInitializationException
 		seminarWebBean.setSelectedSeminar(seminarDao.loadSeminarCustFields(seminarWebBean.getSelectedSeminar()));
-		seminarWebBean.setSelectedUsersForSeminar(seminarWebBean.getSelectedUsersForSeminar()); //todo: change this to get only those users selected for a seminar
+//		seminarWebBean.setSelectedUsersForSeminar(seminarWebBean.getSelectedUsersForSeminar()); //todo: change this to get only those users selected for a seminar
 		
 		//Needed a non-null selected field for edit-seminat.xhtml (popup included in the screen)
 		if(seminarWebBean.getSelectedField() == null){

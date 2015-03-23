@@ -1,7 +1,9 @@
 package org.srcm.gems.regapp.dao;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -9,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.srcm.gems.regapp.domain.Role;
+import org.srcm.gems.regapp.domain.Seminar;
 import org.srcm.gems.regapp.domain.User;
 
 @Repository("rolesDao")
@@ -51,14 +54,15 @@ public class RolesDAOImpl implements RolesDAO{
 		return roles;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Role getRoleByName(String roleName) {
-		List<Role> roles = em.createQuery("select r from Role r where r.roleName like :roleName")
-				.setParameter("roleName", roleName)
+	public List<Role> getRoleByName(String roleName) {
+		List<Role> roles = em.createQuery("select r from Role r where upper(r.roleName) like :roleName")
+				.setParameter("roleName", roleName.toUpperCase()+"%")
 				.getResultList();
 
 		if(roles !=null && !roles.isEmpty()){
-			return roles.get(0);
+			return roles;
 		}else{
 			return null;
 		}
@@ -88,9 +92,9 @@ public class RolesDAOImpl implements RolesDAO{
 			User user = (User) em.createQuery("select u from User u where u.id like :userId")
 		             .setParameter("userId", userId)
 		             .getSingleResult();
-			
-			role.getUsers().add(user);
-			em.persist(role);
+			user.getRoles().add(role);
+//			role.getUsers().add(user);
+			em.persist(user);
 			em.flush();
 	}
 	
@@ -108,6 +112,39 @@ public class RolesDAOImpl implements RolesDAO{
 			role.getUsers().remove(user);
 			em.persist(role);
 			em.flush();
+	}
+
+	@Override
+	@Transactional
+	public void addSeminarUserRoleMapping(int seminarId, int roleId, int userId) {
+		
+		Long semId = Long.valueOf(seminarId);
+		Seminar seminar = (Seminar) em.createQuery("select s from Seminar s where s.seminarId=:seminarId")
+	             .setParameter("seminarId", semId)
+	             .getSingleResult();
+		Role role = (Role) em.createQuery("select r from Role r where r.id=:roleId")
+	             .setParameter("roleId", roleId)
+	             .getSingleResult();
+
+		User user = (User) em.createQuery("select u from User u where u.id=:userId")
+				.setParameter("userId", userId)
+				.getSingleResult();
+//		Map<Role,User> userRoleMap = new HashMap<Role,User>();
+//		userRoleMap.put(role, user);
+////		seminar.setUserRoles(userRoleMap);
+		
+		user.getRoles().add(role);
+		em.persist(user);
+		
+		seminar.getUsers().add(user);
+		em.persist(seminar);
+		em.flush();
+	}
+
+	@Override
+	public List<Role> getSeminarRoles() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -74,10 +74,9 @@
 			</div>
 			
 			<div class="span-12" >
-			
 				<h:outputLabel for="semAdminId">#{messageSource['seminar.administrators']}: </h:outputLabel><br/>
-				<p:selectCheckboxMenu  id="semAdminId"  value="#{seminarWebBean.selectedUsersForSeminar}" label="Select" style="width:35%">
-           		 	<f:selectItems value="#{seminarWebBean.allUsers}" var="user" itemLabel="#{user}" itemValue="#{user}"/>
+				<p:selectCheckboxMenu  id="semAdminId"  value="#{seminar.users}" converter="#{userConverter}" collectionType="java.util.LinkedHashSet" label="Select Users" style="width:35%; color: black; background-color: white;">
+           		 	<f:selectItems value="#{seminarWebBean.allUsers}" var="user" itemLabel="#{user.firstName}" itemValue="#{user}"/>
            		</p:selectCheckboxMenu>
            		
 			</div>

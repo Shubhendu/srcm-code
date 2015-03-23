@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -31,13 +32,17 @@ import org.srcm.gems.regapp.domain.SeminarCustomField;
 import org.srcm.gems.regapp.domain.SeminarRegistrant;
 import org.srcm.gems.regapp.domain.User;
 import org.srcm.gems.regapp.web.helper.SeminarWebHelper;
-import org.srcm.gems.regapp.web.util.AgeRange;
 import org.srcm.gems.regapp.web.util.CustomFieldType;
 import org.srcm.gems.regapp.web.util.DonationAccountType;
 
 @Component("seminarWebBeanProto")
 @Scope("prototype")
 public class SeminarWebBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4203023511369784271L;
 
 	private Seminar selectedSeminar;
 
@@ -51,9 +56,13 @@ public class SeminarWebBean implements Serializable {
 	
 	private UploadFile selectedFile;
 
-	private List<String> allUsers;
+//	private User[] allUsers;
+//	
+//	private User[] selectedUsersForSeminar;
 	
-	private List<String> selectedUsersForSeminar;
+	private List<User> allUsers;
+	
+//	private List<User> selectedUsersForSeminar;
 	
 	public static final short donationAccountTypeNotSelectedConst = 999;
 	
@@ -177,10 +186,16 @@ public class SeminarWebBean implements Serializable {
 		
 		SeminarDAO seminarDao = (SeminarDAO)SeminarWebHelper.getBeanFromElContext("#{seminarDao}");
 		Seminar seminar1 = this.addCustomFieldsToSeminar(seminar);
+		
+//		Set<User> selectedUserSet = seminar.getUsers();
+//		System.out.println("Size of selected users: "+selectedUserSet.size());
+		
 		if(seminar.getEndDt().before(seminar.getStartDt())){
 			messageContext.addMessage(new MessageBuilder().error().source("regForm:endDtId").code("seminar.endt.before.startdt").build());
 			return seminar;
 		}
+		
+//		seminar1.setUsers(selectedUserSet);
 		
 		seminar = seminarDao.createOrSaveSeminar(seminar1);
 		
@@ -323,16 +338,19 @@ public class SeminarWebBean implements Serializable {
 	}
 	
 
-	public List<String> getAllUsers(){
-		this.allUsers=new ArrayList<String>();
+	public List<User> getAllUsers(){
 		UserDAO userDao = (UserDAO)SeminarWebHelper.getBeanFromElContext("#{userDAO}");
 		List<User> userList = userDao.getAllUsers();
-		if(userList != null && !userList.isEmpty()){
-			for(User user: userList){
-				String username=user.getFirstName()+" "+user.getLastName();
-				this.allUsers.add(username);
-			}
-		}
+//		if(userList != null && !userList.isEmpty()){
+//			for(User user: userList){
+//				String username=user.getFirstName()+" "+user.getLastName();
+//				this.allUsers.add(username);
+//			}
+//		}
+//		this.allUsers = userList.toArray(new User[userList.size()]);
+//		return this.allUsers;
+		
+		this.allUsers = userList;
 		return this.allUsers;
 	}
 	
@@ -345,20 +363,25 @@ public class SeminarWebBean implements Serializable {
 		
 	}
 
-	public List<String> getSelectedUsersForSeminar() {
-		this.selectedUsersForSeminar=new ArrayList<String>();
-		UserDAO userDao = (UserDAO)SeminarWebHelper.getBeanFromElContext("#{userDAO}");
-		List<User> userList = userDao.getAllUsers();
-		if(userList != null && !userList.isEmpty()){
-			for(User user: userList){
-				String username=user.getFirstName()+" "+user.getLastName();
-				this.selectedUsersForSeminar.add(username);
-			}
-		}
-		return this.selectedUsersForSeminar;
-	}
-
-	public void setSelectedUsersForSeminar(List<String> selectedUsersForSeminar) {
-		this.selectedUsersForSeminar = selectedUsersForSeminar;
-	}
+//	public List<User> getSelectedUsersForSeminar() {
+//		Long seminarId = this.selectedSeminar.getSeminarId();
+//		
+//		UserDAO userDao = (UserDAO)SeminarWebHelper.getBeanFromElContext("#{userDAO}");
+//		Set<User> seminarSelectedUsers = userDao.gerUsersBySeminarId(seminarId);
+//		List<User> seminarSelectedUserList = new ArrayList<User>(seminarSelectedUsers);
+////		List<User> userList = userDao.getAllUsers();
+////		if(seminarSelectedUsers != null && !seminarSelectedUsers.isEmpty()){
+////			for(User user: seminarSelectedUsers){
+////				String username=user.getFirstName()+" "+user.getLastName();
+////				this.selectedUsersForSeminar.add(username);
+////			}
+////		}
+////		this.selectedUsersForSeminar = seminarSelectedUserList.toArray(new User[seminarSelectedUserList.size()]);
+//		this.selectedUsersForSeminar = seminarSelectedUserList;
+//		return this.selectedUsersForSeminar;
+//	}
+//
+//	public void setSelectedUsersForSeminar(List<User> selectedUsersForSeminar) {
+//		this.selectedUsersForSeminar = selectedUsersForSeminar;
+//	}
 }

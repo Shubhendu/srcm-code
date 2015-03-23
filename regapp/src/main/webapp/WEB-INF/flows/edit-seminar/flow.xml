@@ -21,7 +21,6 @@
  	  
  	  	<on-entry>
  	  		<evaluate expression="seminarWebBean.getFilesForSeminar(flowScope.seminar)" result="flowScope.filesAttahced"/>
- 	  		<evaluate expression="seminarWebBean.selectedUsersForSeminar" result="flowScope.selectedUsers"/>
  	  	</on-entry>
  	  	
  	   <transition on="saveSeminar" to="edit-seminar">

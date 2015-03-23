@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,7 +26,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -31,8 +34,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
-import org.srcm.gems.regapp.web.util.AgeRange;
 import org.srcm.gems.regapp.web.util.DonationAccountType;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 /**
@@ -50,6 +54,7 @@ import org.srcm.gems.regapp.web.util.DonationAccountType;
 	@NamedQuery(name="Seminar.seminarHasRegistrants", query="SELECT count(semReg) FROM SeminarRegistrant semReg where semReg.seminarOrig.seminarId = :semId"),
 	@NamedQuery(name="Seminar.getSeminarByID", query="SELECT sem FROM Seminar sem where sem.seminarId = :semId")
 })
+@JsonIgnoreProperties({"seminarCustomFields","seminarRegistrants","countryEntry","countryObj","seminarUserRoleMappings","userRoles"})
 public class Seminar implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -162,7 +167,43 @@ public class Seminar implements Serializable {
     @JoinColumn(name="country",nullable=true,insertable=false,updatable=false)
 	private Country countryObj;
 	
-    public Seminar() {
+//	@OneToMany(mappedBy="seminar")
+////	@JsonBackReference
+//	private Set<SeminarUserRoleMapping> seminarUserRoleMappings;
+	
+//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinTable(name = "SEMINAR_USER_ROLE_MAPPING",
+//        joinColumns = @JoinColumn(name = "SEMINAR_ID"),
+//        inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+//    @MapKeyJoinColumn(name = "ROLE_ID")
+//    private Map<Role, User> userRoles = new HashMap<Role, User>();
+//	
+//    public Map<Role, User> getUserRoles() {
+//		return userRoles;
+//	}
+//
+//	public void setUserRoles(Map<Role, User> userRoles) {
+//		this.userRoles.clear();
+//		this.userRoles.putAll(userRoles);
+//	}
+	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinTable(name="SEMINAR_USER_MAPPING",
+				joinColumns=@JoinColumn(name="seminar_id"),
+				inverseJoinColumns=@JoinColumn(name="user_id"),
+				uniqueConstraints=@UniqueConstraint(columnNames={"seminar_id","user_id"}))
+	private Set<User> users = new HashSet<User>();
+	
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users.clear();
+		this.users.addAll(users);
+	}
+	
+
+	public Seminar() {
     }
 
 	public Long getSeminarId() {
@@ -387,4 +428,6 @@ public class Seminar implements Serializable {
 	public void setAddressNeeded(String addressNeeded) {
 		this.addressNeeded = addressNeeded;
 	}
+
+	
 }

@@ -3,7 +3,9 @@
  */
 package org.srcm.gems.regapp.dao;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.srcm.gems.regapp.domain.Role;
+import org.srcm.gems.regapp.domain.Seminar;
 import org.srcm.gems.regapp.domain.User;
 
 /**
@@ -61,18 +64,18 @@ public class UserDAOImpl implements UserDAO {
 		}
 	}
 	
-//	@Override
-//	public User getUserById(int userId) {
-//		List<User> users = em.createQuery("select u from User u where u.id like :userId")
-//				.setParameter("userId", userId)
-//				.getResultList();
-//
-//		if(users !=null && !users.isEmpty()){
-//			return users.get(0);
-//		}else{
-//			return null;
-//		}
-//	}
+	@Override
+	public User getUserById(int userId) {
+		List<User> users = em.createQuery("select u from User u where u.id like :userId")
+				.setParameter("userId", userId)
+				.getResultList();
+
+		if(users !=null && !users.isEmpty()){
+			return users.get(0);
+		}else{
+			return null;
+		}
+	}
 	
 	@Override
 	@Transactional
@@ -105,6 +108,17 @@ public class UserDAOImpl implements UserDAO {
 			user.getRoles().remove(role);
 			em.persist(user);
 			em.flush();
+	}
+
+	@Override
+	@Transactional
+	public Set<User> gerUsersBySeminarId(Long seminarId) {
+		Seminar seminar = (Seminar) em.createQuery("select s from Seminar s where s.seminarId=:seminarId")
+	             .setParameter("seminarId", seminarId)
+	             .getSingleResult();
+		Set<User> userSet = new HashSet<User>();
+		userSet.addAll(seminar.getUsers());
+		return userSet;
 	}
 
 }
